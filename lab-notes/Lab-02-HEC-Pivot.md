@@ -24,3 +24,8 @@ The following activity was observed and detected:
 - **Severity:** Context-dependent (Low–Medium)  
 - **Assessment:** Benign in lab context  
 - **Analyst Actions:** Confirm parent process, user context, command lineage, repeated behavior
+
+## Lessons Learned
+- Cloud SIEM environments may enforce ingestion constraints that differ from self-hosted deployments.
+- Multiple ingestion methods (agent vs API) should be evaluated in enterprise environments.
+- Reliable telemetry delivery is foundational to effective SOC detection and triage.
