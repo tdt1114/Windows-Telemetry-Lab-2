@@ -1,19 +1,23 @@
-## Overview
-This project documents a progressive Windows telemetry lab focused on endpoint process creation logging (4688 + Sysmon),
-SIEM ingestion, and SOC-style detection/triage workflows.
+# Windows Telemetry SOC Lab
 
-## Skills Demonstrated
-- Windows auditing (4688) + command-line capture
-- Sysmon deployment and validation
-- Log ingestion into SIEM (Splunk)
-- Baseline analysis, detection logic, and triage documentation
+## About
+This lab demonstrates the setup, ingestion, and analysis of Windows endpoint telemetry used in Security Operations. Native process creation auditing (Event ID 4688) and Sysmon were enabled on a Windows host and ingested into Splunk Cloud using HTTP Event Collector (HEC).
 
-## Lab Phases
-- Phase 1: Sysmon + 4688 enablement + Splunk ingestion (local)
-- Phase 2 (current): Pivot to host-based telemetry + cloud SIEM ingestion
+The project focuses on SOC-style workflows: validating telemetry, detecting suspicious process execution, and performing basic triage using command-line evidence.
 
-## Repository Structure
-- lab-notes/   – Lab documentation and analysis notes
-- configs/     – Sanitized configuration snippets
-- detections/  – Detection logic and SPL queries
-- images/      – Evidence screenshots (SOC-focused)
+## Architecture
+Windows Endpoint  
+→ Windows Event Logs (4688) & Sysmon  
+→ Splunk Cloud (HEC)  
+→ Detection & Triage
+
+## What This Lab Demonstrates
+- Windows process telemetry (4688, Sysmon Event ID 1)
+- Cloud SIEM ingestion using HTTP Event Collector
+- Detection of PowerShell execution with ExecutionPolicy Bypass
+- Analysis of common reconnaissance commands (whoami, ipconfig)
+- SOC-style triage and decision-making
+
+## Status
+Phase 1: Endpoint Telemetry — Complete  
+Phase 2: SIEM Ingestion & Detection — Complete
