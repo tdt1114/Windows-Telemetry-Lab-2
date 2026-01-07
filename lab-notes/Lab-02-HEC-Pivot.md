@@ -1,31 +1,78 @@
-# Lab 02 – SIEM Ingestion via HEC
+SOC Alert Investigation – Endpoint Telemetry (Splunk Cloud)
+Objective
 
-## Objective
-Ingest Windows endpoint telemetry into Splunk Cloud and demonstrate SOC-style detection and triage.
+Ingest Windows endpoint telemetry into Splunk Cloud and perform SOC-style detection and triage on process execution activity.
 
-## Environment Pivot (VM to Host)
-Initial validation was completed using a local Windows VM to generate telemetry. Due to local resource constraints impacting VM performance and stability, the environment was transitioned to a dedicated Windows host to ensure reliable event generation and focus on telemetry quality and analysis.
+Environment & Design Decisions
 
-## SIEM Ingestion Pivot (Design Decision)
-Universal Forwarder–based ingestion was initially attempted using Splunk Cloud’s TCP receiver. While endpoint telemetry and authentication were validated, sustained ingestion was inconsistent due to receiver-side constraints in the cloud trial environment. To ensure reliable delivery of endpoint telemetry and complete detection workflows, ingestion was intentionally pivoted to Splunk HTTP Event Collector (HEC). This cloud-native ingestion method allowed telemetry delivery and detection without infrastructure blockers.
+Endpoint Source
+Initial testing was performed on a local Windows VM to validate telemetry generation. Due to resource constraints impacting stability, the environment was transitioned to a dedicated Windows host to ensure consistent event generation and accurate analysis.
 
-## Data Sources
-- Windows Security Event ID 4688 (process creation)  
-- Sysmon Event ID 1 (process execution)  
-- Transport: Splunk HTTP Event Collector (HEC)
+SIEM Ingestion Method
+Universal Forwarder ingestion via Splunk Cloud TCP receiver was validated but proved inconsistent in the cloud trial environment. To ensure reliable telemetry delivery and complete detection workflows, ingestion was intentionally pivoted to Splunk HTTP Event Collector (HEC), a cloud-native method commonly used in enterprise environments.
 
-## Detection Evidence
-The following activity was observed and detected:
-- PowerShell execution using `-ExecutionPolicy Bypass`  
-- Common reconnaissance commands: `whoami`, `ipconfig`
+Rationale: Reliable ingestion is a prerequisite for effective detection and triage.
 
-## Triage Summary
-- **Activity Type:** Process execution / reconnaissance  
-- **Severity:** Context-dependent (Low–Medium)  
-- **Assessment:** Benign in lab context  
-- **Analyst Actions:** Confirm parent process, user context, command lineage, repeated behavior
+Data Sources
 
-## Lessons Learned
-- Cloud SIEM environments may enforce ingestion constraints that differ from self-hosted deployments.
-- Multiple ingestion methods (agent vs API) should be evaluated in enterprise environments.
-- Reliable telemetry delivery is foundational to effective SOC detection and triage.
+Windows Security Event ID 4688 (Process Creation)
+
+Sysmon Event ID 1 (Process Execution)
+
+Transport: Splunk HTTP Event Collector (HEC)
+
+Alert / Detection Evidence
+
+The following activity triggered investigation:
+
+PowerShell execution with -ExecutionPolicy Bypass
+
+Execution of common reconnaissance commands:
+
+whoami
+
+ipconfig
+
+These behaviors are frequently associated with post-compromise reconnaissance but can also occur during legitimate administrative or testing activity.
+
+Triage & Investigation
+
+Analyst Review Included:
+
+Parent process validation
+
+User account context
+
+Command-line arguments
+
+Execution lineage and repetition
+
+Host role and lab context
+
+No evidence of lateral movement, privilege escalation, or follow-on malicious behavior was observed.
+
+Assessment & Disposition
+
+Activity Type: Process execution / reconnaissance
+
+Severity: Context-dependent (Low–Medium)
+
+Determination: False positive in lab context
+
+The behavior was assessed as benign based on execution context, controlled environment, and absence of corroborating indicators.
+
+Analyst Action
+
+Documented investigation steps and rationale
+
+No escalation required
+
+Detection logic reviewed for tuning considerations in controlled environments
+
+Lessons Learned
+
+Cloud SIEM environments may impose ingestion constraints that differ from self-hosted deployments.
+
+Multiple ingestion methods (agent-based vs API-based) should be evaluated for reliability.
+
+Consistent telemetry delivery is foundational to effective SOC detection, triage, and tuning.
